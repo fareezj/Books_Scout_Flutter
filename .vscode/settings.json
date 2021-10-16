@@ -1,0 +1,4 @@
+{
+  "dart.flutterHotReloadOnSave": "always",
+  "terminal.integrated.scrollback": 100000000
+}
