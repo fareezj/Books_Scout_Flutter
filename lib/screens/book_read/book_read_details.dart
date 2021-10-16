@@ -1,5 +1,5 @@
 import 'package:book_scout/models/db_book_model.dart';
-import 'package:book_scout/screens/dashboard.dart';
+import 'package:book_scout/screens/dashboard/dashboard.dart';
 import 'package:book_scout/viewModels/db_books_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

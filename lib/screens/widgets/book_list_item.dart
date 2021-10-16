@@ -54,17 +54,21 @@ class _BookListItemState extends State<BookListItem> {
                     margin: const EdgeInsets.only(top: 0.0),
                     height: 250,
                     width: double.infinity,
-                    child: Image.network(widget.bookImage, errorBuilder:
-                        (BuildContext context, Object exception,
-                            StackTrace? stackTrace) {
-                      // Appropriate logging or analytics, e.g.
-                      // myAnalytics.recordError(
-                      //   'An error occurred loading "https://example.does.not.exist/image.jpg"',
-                      //   exception,
-                      //   stackTrace,
-                      // );
-                      return const Text('😢');
-                    }, fit: BoxFit.fill)),
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(20.0)),
+                      child: Image.network(widget.bookImage, errorBuilder:
+                          (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                        // Appropriate logging or analytics, e.g.
+                        // myAnalytics.recordError(
+                        //   'An error occurred loading "https://example.does.not.exist/image.jpg"',
+                        //   exception,
+                        //   stackTrace,
+                        // );
+                        return const Text('😢');
+                      }, fit: BoxFit.fill),
+                    )),
                 Container(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 15.0),

@@ -1,4 +1,4 @@
-import 'package:book_scout/screens/dashboard.dart';
+import 'package:book_scout/screens/dashboard/dashboard.dart';
 import 'package:book_scout/screens/widgets/bookmark_list_item.dart';
 import 'package:book_scout/viewModels/db_books_view_model.dart';
 import 'package:flutter/material.dart';

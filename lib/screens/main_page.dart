@@ -1,6 +1,6 @@
 import 'package:book_scout/screens/book_details/book_details.dart';
 import 'package:book_scout/screens/book_read/book_read.dart';
-import 'package:book_scout/screens/dashboard.dart';
+import 'package:book_scout/screens/dashboard/dashboard.dart';
 import 'package:book_scout/screens/saved_books.dart';
 import 'package:flutter/material.dart';
 

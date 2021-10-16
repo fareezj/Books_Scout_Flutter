@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:book_scout/models/book_model.dart';
-import 'package:book_scout/screens/saved_books.dart';
+import 'package:book_scout/screens/book_read/widgets/book_read_list_item.dart';
 import 'package:book_scout/screens/widgets/book_list_item.dart';
 import 'package:book_scout/viewModels/books_view_model.dart';
+import 'package:book_scout/viewModels/db_books_view_model.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -14,24 +15,41 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int totalDataLength = 0;
+  int totalBookToReadLength = 0;
   bool isLoading = true;
+  bool isLoadingBookToRead = true;
   String searchText = "ronaldo";
   final myController = TextEditingController();
   var vm = BooksViewModel();
   final List<BookListModel> _bookList = <BookListModel>[];
+  Future<List<Map>>? _readBooksData;
   static const TextStyle bottomNavStyle = TextStyle(fontSize: 18.0);
+  DbBooksViewModel dbViewModel = DbBooksViewModel();
 
   @override
   void initState() {
-    vm.getSearchBook(searchText).then((value) {
-      setState(() {
-        isLoading = false;
-        _bookList.add(value[0]);
-        for (var element in _bookList) {
-          totalDataLength = element.bookItem!.length;
+    if (_bookList.isEmpty) {
+      vm.getSearchBook(searchText).then((value) {
+        setState(() {
+          isLoading = false;
+          _bookList.add(value[0]);
+          for (var element in _bookList) {
+            totalDataLength = element.bookItem!.length;
+          }
+        });
+      });
+      _readBooksData = dbViewModel.getAllReadBooks().then((value) {
+        if (value.isNotEmpty) {
+          setState(() {
+            isLoadingBookToRead = false;
+            totalBookToReadLength = value.length;
+          });
+          return value;
+        } else {
+          throw '';
         }
       });
-    });
+    }
     super.initState();
   }
 
@@ -45,6 +63,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   void dispose() {
+    myController.dispose();
     super.dispose();
   }
 
@@ -80,7 +99,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         onPressed: () {
                           searchBookList();
                         },
-                        child: const Text('Search Book'),
+                        child: const Icon(Icons.search),
                       ),
                     ),
                   ],
@@ -129,6 +148,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           }),
                     ),
               const DashboardTitle(title: 'Books to Read'),
+              isLoadingBookToRead
+                  ? const CircularProgressIndicator()
+                  : SizedBox(
+                      height: Platform.isIOS
+                          ? 350
+                          : MediaQuery.of(context).size.height / 2.35,
+                      child: FutureBuilder<List<Map>>(
+                        future: _readBooksData,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<Map>> snapshot) {
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: totalBookToReadLength,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return (BookReadListItem(
+                                    id: snapshot.data?[index]['id'] ?? "",
+                                    title: snapshot.data?[index]['title'] ?? "",
+                                    description: snapshot.data?[index]
+                                            ['description'] ??
+                                        "",
+                                    publisher: snapshot.data?[index]
+                                            ['publisher'] ??
+                                        "",
+                                    bookImage:
+                                        snapshot.data?[index]['image'] ?? "",
+                                    authors:
+                                        snapshot.data?[index]['author'] ?? "",
+                                  ));
+                                });
+                          } else {
+                            return Text('No Data');
+                          }
+                        },
+                      ),
+                    )
             ],
           ),
         ),
