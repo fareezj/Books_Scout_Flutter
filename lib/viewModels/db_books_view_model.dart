@@ -19,7 +19,6 @@ class DbBooksViewModel {
     Database db = await DatabaseHelper.instance.database;
     List<Map> result =
         await db.rawQuery('SELECT * FROM booksRead where idRead=?', [bookId]);
-    print(result[0]);
     return result;
   }
 
@@ -51,7 +50,6 @@ class DbBooksViewModel {
     List<Map> result = await db
         .rawQuery('SELECT * FROM books WHERE isAddedToReadList=?', ["true"]);
     //print(result[0]["id"]);
-    print(result[0]);
     return result;
   }
 }

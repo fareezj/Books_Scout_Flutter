@@ -61,6 +61,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }));
   }
 
+  void refreshCallback(String val) {
+    print(val);
+    _readBooksData = dbViewModel.getAllReadBooks().then((value) {
+      if (value.isNotEmpty) {
+        setState(() {
+          isLoadingBookToRead = false;
+          totalBookToReadLength = value.length;
+        });
+        print(value.length);
+        return value;
+      } else {
+        throw '';
+      }
+    });
+  }
+
   @override
   void dispose() {
     myController.dispose();
@@ -75,7 +91,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height * 1.1,
           child: Column(
             children: [
               Padding(
@@ -117,6 +133,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           itemCount: totalDataLength,
                           itemBuilder: (BuildContext context, int index) {
                             return BookListItem(
+                              onRefreshCallback: (val) => refreshCallback(val),
                               id: _bookList[0].bookItem?[index].id ?? "",
                               title: _bookList[0]
                                       .bookItem?[index]

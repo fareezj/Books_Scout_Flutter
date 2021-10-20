@@ -21,7 +21,7 @@ class _BookReadState extends State<BookRead> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenAspectRatio = MediaQuery.of(context).size.aspectRatio;
+    final double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
           title: const Text('Books to Read'),
@@ -32,8 +32,7 @@ class _BookReadState extends State<BookRead> {
             if (snapshot.hasData) {
               return GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: screenAspectRatio / 0.7,
-                      crossAxisCount: 2),
+                      childAspectRatio: screenHeight / 1400, crossAxisCount: 2),
                   itemCount: snapshot.data?.length,
                   itemBuilder: (BuildContext context, int index) {
                     return (BookReadListItem(

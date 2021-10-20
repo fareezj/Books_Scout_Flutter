@@ -8,6 +8,7 @@ class BookListItem extends StatefulWidget {
   final String description;
   final String bookImage;
   final List<dynamic> authors;
+  final Function(String)? onRefreshCallback;
 
   const BookListItem(
       {Key? key,
@@ -16,7 +17,8 @@ class BookListItem extends StatefulWidget {
       required this.publisher,
       required this.description,
       required this.bookImage,
-      required this.authors})
+      required this.authors,
+      required this.onRefreshCallback})
       : super(key: key);
 
   @override
@@ -44,6 +46,7 @@ class _BookListItemState extends State<BookListItem> {
                           authors: widget.authors,
                           description: widget.description,
                           image: widget.bookImage,
+                          refreshCallback: widget.onRefreshCallback,
                         )));
           },
           child: Container(

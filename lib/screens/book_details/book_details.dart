@@ -54,7 +54,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
 
   void parseValue(value) {
     var tagJson = jsonDecode(value[0]['sideNotes']);
-    print(tagJson.runtimeType);
+    // print(tagJson.runtimeType);
   }
 
   void checkingBookInfo(String fieldName, List<dynamic> value) {
@@ -156,11 +156,11 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                       })
             }
         });
-    if (widget.refreshCallback != null) {
-      widget.refreshCallback!('Hello refresh');
-      // print('Total Bookmark now: ');
-      // dbViewModel.getAllBookmark().then((value) => print(value.length));
-    }
+    // if (widget.refreshCallback != null) {
+    //   widget.refreshCallback!('Hello refresh');
+    //   // print('Total Bookmark now: ');
+    //   // dbViewModel.getAllBookmark().then((value) => print(value.length));
+    // }
   }
 
   void onAddToReadList() {
@@ -197,6 +197,20 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title ?? "Null"),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                if (widget.refreshCallback != null) {
+                  widget.refreshCallback!('Hello refresh');
+                }
+                Navigator.pop(context);
+              },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
+        ),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
